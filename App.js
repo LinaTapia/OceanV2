@@ -1,20 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import Home from './src/screens/Home';
+import { colors } from './src/theme/colors';
+import Products from './src/screens/Products';
+import { useFonts } from 'expo-font';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    Barlow: require("./assets/fonts/Barlow-Regular.ttf"),
+    BarlowSemiBold: require("./assets/fonts/Barlow-SemiBold.ttf"),
+    BarlowBold: require("./assets/fonts/Barlow-Bold.ttf")
+  })
+
+  if(!fontsLoaded) return
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Home/> 
+      <Products category="resin plugs"/> 
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: colors.white
+  }
 });
