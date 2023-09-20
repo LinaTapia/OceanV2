@@ -1,5 +1,5 @@
 export const categories = [
     "wood plugs",
-    "spiral plus",
+    "spiral plugs",
     "resin plugs"
 ]

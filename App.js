@@ -1,8 +1,8 @@
-import { StyleSheet, SafeAreaView } from 'react-native';
-import Home from './src/screens/Home';
+import { StyleSheet } from 'react-native';
 import { colors } from './src/theme/colors';
-import Products from './src/screens/Products';
 import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigation from './src/navigation/RootNavigation';
 
 export default function App() {
 
@@ -15,10 +15,9 @@ export default function App() {
   if(!fontsLoaded) return
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Home/> 
-      <Products category="resin plugs"/> 
-    </SafeAreaView>
+    <NavigationContainer>
+      <RootNavigation/>
+    </NavigationContainer>
   );
 }
 
