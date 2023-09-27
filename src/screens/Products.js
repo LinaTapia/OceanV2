@@ -1,23 +1,24 @@
 import {FlatList, Text, StyleSheet } from 'react-native'
 import React, { useEffect, useState }  from 'react'
 import Search from '../components/Search'
-import { products } from '../data/products'
 import ProductItem from '../components/ProductItem'
 import { colors } from '../theme/colors'
 import  Header  from '../components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSelector } from 'react-redux'
 
 const Products = ({ route , navigation}) => {
-
+  const products = useSelector( state => state.homeSlice.allProducts)
   const [productFiltered, setFilterByCategory] = useState([])
   const [textInput, setTextInput] = useState(null)
   const { item } = route.params;
 
   const removeSpecialChars = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
+  const productsFilterByCategory = useSelector(state => state.homeSlice.productsFilterByCategory)
+
   useEffect(() => {
-    const filterByCategory = products.filter((el) => el.category === item)
-    setFilterByCategory(filterByCategory)
+    setFilterByCategory(productsFilterByCategory)
 
     if(textInput){
       const titleProduct = products.filter((el) => removeSpecialChars(el.title).includes(removeSpecialChars(textInput)))

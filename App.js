@@ -2,7 +2,9 @@ import { StyleSheet } from 'react-native';
 import { colors } from './src/theme/colors';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
-import RootNavigation from './src/navigation/RootNavigation';
+import TabNav from './src/navigation/TabNav';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 
 export default function App() {
 
@@ -15,9 +17,11 @@ export default function App() {
   if(!fontsLoaded) return
 
   return (
-    <NavigationContainer>
-      <RootNavigation/>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <TabNav/>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

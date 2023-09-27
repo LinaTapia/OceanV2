@@ -1,28 +1,27 @@
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native'
 import React from 'react'
-import { products } from '../data/products'
 import { colors } from '../theme/colors'
 import  Header  from '../components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSelector } from 'react-redux'
 
-const ProductDetail = ({navigation, route}) => {
-    const { item } = route.params;
-    const productSelected = products.find((el) => el.id === item.id)
-    console.log(productSelected.title);
-  return (
-    <SafeAreaView>
-        <Header title={ productSelected.title } navigation={navigation} />
-        <View style={styles.container}>
-        <Image style={styles.image} source={{uri: productSelected.images[0]}}/>
-        <Text style={styles.title}>{productSelected.title}</Text>
-        <Text style={styles.description}>{productSelected.description}</Text>
-        <Text style={styles.price}>${productSelected.price.toLocaleString("de")}</Text>
-        <Text style={styles.stock}>Stock: {productSelected.stock}</Text>
-        <Pressable>
-            <Text style={styles.button}>Agregar al Carrito</Text>
-        </Pressable>
-        </View>
-    </SafeAreaView>
+const ProductDetail = ({navigation}) => {
+    const productSelected = useSelector( state => state.homeSlice.productSelected)
+
+    return (
+        <SafeAreaView>
+            <Header title={ productSelected.title } navigation={navigation} />
+            <View style={styles.container}>
+            <Image style={styles.image} source={{uri: productSelected.images[0]}}/>
+            <Text style={styles.title}>{productSelected.title}</Text>
+            <Text style={styles.description}>{productSelected.description}</Text>
+            <Text style={styles.price}>${productSelected.price.toLocaleString("de")}</Text>
+            <Text style={styles.stock}>Stock: {productSelected.stock}</Text>
+            <Pressable>
+                <Text style={styles.button}>Agregar al Carrito</Text>
+            </Pressable>
+            </View>
+        </SafeAreaView>
   )
 }
 

@@ -1,10 +1,16 @@
 import {Text, StyleSheet, Image, Pressable } from 'react-native'
 import React from 'react'
-import { colors } from '../theme/colors';
+import { colors } from '../theme/colors'
+import { setProduct } from '../redux/slice/homeSlice'
+import { useDispatch } from 'react-redux'
 
 const ProductItem = ({item, navigation}) => {
+  const dispatch = useDispatch()
   return (
-      <Pressable style={styles.items} onPress={() => navigation.navigate("productDetail", {item: item})}>
+      <Pressable style={styles.items} onPress={() => {
+        dispatch(setProduct(item))
+        navigation.navigate("productDetail", {item: item})
+      }}>
         <Image
           style={styles.image}
           source={{

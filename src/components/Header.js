@@ -4,10 +4,9 @@ import { colors } from "../theme/colors";
 import { AntDesign } from '@expo/vector-icons';
 
 const Header = ({title, navigation}) => {
-  console.log(title);
   return (
     <View style={styles.container}>
-      { title != "Categorias" ?   
+      { title != "Categorias" && title != "Mi Perfil" ?   
       <Pressable onPress={() => navigation.goBack()}>
         <AntDesign name="arrowleft" size={24} color="white" />
       </Pressable> : ""}
