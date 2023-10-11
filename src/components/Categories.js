@@ -1,11 +1,9 @@
 import { View, FlatList } from 'react-native'
 import React from 'react'
 import CategoryItem from './CategoryItem';
-import { useSelector } from 'react-redux';
-
+import { useGetCategoriesQuery } from '../services/ecApi';
 const Categories = ({navigation}) => {
-  const categories = useSelector( state => state.homeSlice.allCategories)
-  console.log(categories)
+  const { data:categories, isLoading, error} = useGetCategoriesQuery()
   return (
     <View>
       <FlatList data={categories}

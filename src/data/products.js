@@ -2,7 +2,7 @@ export const products = [{
     id: 1,
     title: "Tapón Azul",
     category: "resin plugs",
-    description: 'Tapón desde los 20mm a los 30mm',
+    description: "Tapón desde los 20mm a los 30mm",
     price: 7000,
     stock: 5,
     images: [

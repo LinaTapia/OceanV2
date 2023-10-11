@@ -6,16 +6,21 @@ import { colors } from '../theme/colors'
 import  Header  from '../components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
+import { useGetProducstQuery } from '../services/ecApi'
 
 const Products = ({ route , navigation}) => {
-  const products = useSelector( state => state.homeSlice.allProducts)
+  const products = useSelector((state) => state.homeSlice.allProducts) 
+/*   const { data, isLoading, isError } = useGetProducstQuery()
+ */
   const [productFiltered, setFilterByCategory] = useState([])
   const [textInput, setTextInput] = useState(null)
   const { item } = route.params;
 
   const removeSpecialChars = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 
-  const productsFilterByCategory = useSelector(state => state.homeSlice.productsFilterByCategory)
+  const productsFilterByCategory = useSelector(
+    (state) => state.homeSlice.productsFilterByCategory
+  );
 
   useEffect(() => {
     setFilterByCategory(productsFilterByCategory)
