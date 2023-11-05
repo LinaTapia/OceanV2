@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, View, Text,  } from 'react-native'
+import { Image, Pressable, StyleSheet, View, Text, Alert } from 'react-native'
 import React, {useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import  Header  from '../components/Header'
@@ -7,14 +7,17 @@ import * as ImagePicker from 'expo-image-picker'
 import { usePutImageMutation } from '../services/ecApi'
 import { useGetImageQuery } from '../services/ecApi'
 import { ActivityIndicator } from 'react-native'
-
+import { useDispatch } from 'react-redux'
 import * as Location from 'expo-location';
+import { clearUser } from '../redux/slice/authSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profile = ({navigation}) => {
     const [putImage, result] = usePutImageMutation()
     const { data, isLoading, error, isError, refetch } = useGetImageQuery();
     const [location, setLocation] = useState(null);
-
+    const dispatch = useDispatch()
+    // Función para seleccionar una imagen de la biblioteca
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -23,7 +26,7 @@ const Profile = ({navigation}) => {
           quality: 1,
           base64: true,
         })
-    
+        // Si la selección de la imagen no fue cancelada, la sube y refresca los datos
         if (!result.canceled) {
           await putImage({
             image: `data:image/jpeg;base64,${result.assets[0].base64}`,
@@ -32,7 +35,7 @@ const Profile = ({navigation}) => {
           refetch()
         }
     }
-
+    // Función para abrir la cámara y tomar una foto
     const openCamera = async () => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     
@@ -44,7 +47,7 @@ const Profile = ({navigation}) => {
             base64: true,
           });
 
-    
+          // Si la captura de la imagen no fue cancelada, la sube y refresca los datos
           if (!result.canceled) {
             await putImage({
               image: `data:image/jpeg;base64,${result.assets[0].base64}`,
@@ -53,7 +56,7 @@ const Profile = ({navigation}) => {
           }
         }
       }
-
+      // Función para obtener las coordenadas del usuario
       const getCoords = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync()
     
@@ -64,6 +67,25 @@ const Profile = ({navigation}) => {
         let location = await Location.getCurrentPositionAsync({})
         setLocation(location);
         navigation.navigate("mapaLoc", { location }) 
+      }
+      // Función para manejar el cierre de sesión
+      const handleLogout = async () => {
+        try {
+            dispatch(clearUser())
+            await AsyncStorage.removeItem("userEmail")
+            navigation.navigate("rootNavigation")
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      // Función para mostrar un diálogo de confirmación antes de cerrar sesión
+      const onLogout = () => {
+        Alert.alert('Cerrar sesión', '¿Estás seguro que deseas cerrar sesión?', [
+          {
+            text: 'No',
+          },
+          {text: 'Si', onPress: () => handleLogout()},
+        ]);
       }
     
   return (
@@ -81,6 +103,9 @@ const Profile = ({navigation}) => {
             </Pressable>
             <Pressable onPress={() => getCoords()}>
                 <Text style={styles.button}>Mapa</Text>
+            </Pressable>
+            <Pressable onPress={() => onLogout()}>
+                <Text style={styles.button}>Cerrar Sesión</Text>
             </Pressable>
         </View>
     </SafeAreaView>

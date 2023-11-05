@@ -11,18 +11,20 @@ const Register = ({ navigation }) => {
 
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
-
+    // Función para manejar el registro de usuario
     const handleRegister = async () => {
         try {
+          // Intenta crear un nuevo usuario con el correo electrónico y la contraseña proporcionados
           const response = await createUserWithEmailAndPassword(
             auth_firebase,
             email,
             password
           )
-          console.log(response)
+          // Navega a la pantalla de inicio de sesión después de un registro exitoso
           navigation.navigate('login')
         } catch (e) {
           console.log('Error en registro', e)
+           // Manejo de errores específicos y actualización de mensajes de error
           if(e.message === 'Firebase: Error (auth/missing-email).'){
             setEmailError('Este campo es obligatorio')
           }else if(e.message === 'Firebase: Error (auth/missing-password).'){

@@ -3,20 +3,19 @@ import React from 'react'
 import { colors } from '../theme/colors'
 import  Header  from '../components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useSelector } from 'react-redux'
 
-const ProductDetail = ({navigation}) => {
-    const productSelected = useSelector( state => state.homeSlice.productSelected)
+const ProductDetail = ({route,navigation}) => {
+    const { item } = route.params
 
     return (
         <SafeAreaView>
-            <Header title={ productSelected.title } navigation={navigation} />
+            <Header title={ item.title } navigation={navigation} />
             <View style={styles.container}>
-            <Image style={styles.image} source={{uri: productSelected.images[0]}}/>
-            <Text style={styles.title}>{productSelected.title}</Text>
-            <Text style={styles.description}>{productSelected.description}</Text>
-            <Text style={styles.price}>${productSelected.price.toLocaleString("de")}</Text>
-            <Text style={styles.stock}>Stock: {productSelected.stock}</Text>
+            <Image style={styles.image} source={{uri: item.images[0]}}/>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.price}>${item.price.toLocaleString("de")}</Text>
+            <Text style={styles.stock}>Stock: {item.stock}</Text>
             <Pressable>
                 <Text style={styles.button}>Agregar al Carrito</Text>
             </Pressable>

@@ -6,6 +6,7 @@ import { auth_firebase } from '../firebase/auth_firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { setIdToken, setUser } from '../redux/slice/authSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Login = ({ navigation }) => {
     const dispatch = useDispatch()
@@ -14,16 +15,20 @@ const Login = ({ navigation }) => {
         
     const handleLogin = async () => {
         try {
-        const response = await signInWithEmailAndPassword(
-            auth_firebase,
-            email,
-            password
-        )
-        console.log(response)
-        dispatch(setUser(response.user.email));
-        dispatch(setIdToken(response._tokenResponse.idToken)) 
+            // Intenta autenticar al usuario utilizando el método signInWithEmailAndPassword de Firebase
+            const response = await signInWithEmailAndPassword(
+                auth_firebase,
+                email,
+                password
+            )
+             // Almacenar el correo electrónico del usuario en el almacenamiento local (AsyncStorage)
+            AsyncStorage.setItem('userEmail', response.user.email)
+            // Despacha una acción Redux para establecer el correo electrónico y Token del usuario en el estado de la aplicación
+            dispatch(setUser(response.user.email));
+            dispatch(setIdToken(response._tokenResponse.idToken)) 
         } catch (e) {
-        console.log('Error en Login', e)
+            // En caso de error, registra un mensaje de error en la consola
+            console.log('Error en Login', e)
         }
     }
   return (
